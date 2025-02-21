@@ -6,9 +6,9 @@ module.exports.users = [
     },
     {
         id: 2,
-        username: "Iván",
+        username: "Ivan",
         password: "12345"
     },
 ]
 
-module.exports = {users}
+1

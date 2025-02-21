@@ -1,23 +1,21 @@
-const {users} = require("../Data/users.js");
-
-// Funcion para poner ruta
-// get --> /get-users
+const { users } = require("../Data/users.js");
 
 const getAllUsers = () => {
-    return users;
-}
+  return users;
+};
 
-const login = (username, password)=>{
-    var token = "";
-    //TODO: Validar USUARIO
-    if(getUserByNameAndPwd(username, password)){
-    return token;
-    }
-    return "usuario o contraseña incorrectos";
-}
+const login = (username, password) => {
+  const user = getUserByNameAndPwd(username, password);
+  
+  if (user) {
+    return { token: `token-falso-${user.id}` };
+  }
+  
+  return { message: "Usuario o contraseña incorrectos" };
+};
 
-const getUserByNameAndPwd = (username, password) =>{
-    return users.find(usr=>usr.username === username && usr.password === password);
-}
+const getUserByNameAndPwd = (username, password) => {
+  return users.find(usr => usr.username === username && usr.password === password);
+};
 
-module.exports = {getAllUsers,login}
+module.exports = { getAllUsers, login };
