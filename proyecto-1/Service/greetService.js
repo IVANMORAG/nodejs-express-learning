@@ -1,5 +1,8 @@
-const greet = (userId) => {
-    return { message: `Saludo protegido para el usuario con ID: ${userId}` };
-  };
-  
-  module.exports = { greet };
+
+
+const greet = ()=>{
+  return {message:"Saludo protegido"};
+}
+
+
+module.exports = {greet}

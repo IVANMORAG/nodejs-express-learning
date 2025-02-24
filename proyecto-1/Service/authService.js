@@ -1,28 +1,53 @@
-const User = require('../models/User');
+const {User} = require("../models/userModel.js");
 
-// Obtener todos los usuarios
-const getAllUsers = async () => {
-  try {
-    const users = await User.find().select('-password');
-    return users;
-  } catch (error) {
-    throw new Error('Error al obtener usuarios');
-  }
-};
-
-// Login de usuario
-const login = async (username, password) => {
-  try {
-    const user = await User.findOne({ username, password });
-    
-    if (user) {
-      return { token: `token-falso-${user._id}` };
+//funcion para la primer ruta 
+//get --> /get-users
+const getAllUsers = async ()=>{
+    try {
+        const users = await User.find();
+        return users;
+    } catch (error) {
+        console.error(error);
+        return null;        
     }
     
-    return { message: "Usuario o contraseña incorrectos" };
-  } catch (error) {
-    throw new Error('Error en el proceso de login');
-  }
-};
+}
 
-module.exports = { getAllUsers, login };
+
+const createUser = async (username, password)=>{
+try {
+    const newUser = new User({username,password});
+    const savedUser = await newUser.save();
+    return savedUser;
+} catch (error) {
+    return null;
+}
+
+}
+
+
+const login = async (username,password)=>{
+    const user = await getUserByNameAndPwd(username,password);
+    if (user){
+        var token = `token-falso-${user._id}`;
+        return {token};
+    }
+    return {message:"usuario o contraseña incorrectos"};
+}
+
+const getUserByNameAndPwd = async (username,password)=>{
+    try {
+        const user = await User.findOne({username,password});
+        return user;
+    } catch (error) {
+        return null;
+    }
+}
+
+
+
+module.exports = {
+    getAllUsers,
+    login,
+    createUser
+}
