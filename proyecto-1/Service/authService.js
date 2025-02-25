@@ -45,7 +45,6 @@ const getUserByNameAndPwd = async (username,password)=>{
 }
 
 
-
 module.exports = {
     getAllUsers,
     login,
