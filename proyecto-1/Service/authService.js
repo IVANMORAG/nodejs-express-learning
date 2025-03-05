@@ -1,52 +1,41 @@
-const {User} = require("../models/userModel.js");
+const login = async (username, password) => {
+    // Actualizamos la URL para apuntar al servicio de usuarios en el puerto 3000
+    const URL_USER_SERVICE = "http://localhost:3000/users/username/"
 
-//funcion para la primer ruta 
-//get --> /get-users
-const getAllUsers = async ()=>{
     try {
-        const users = await User.find();
-        return users;
+        // Recibir respuesta del ENDPOINT
+        const response = await fetch(URL_USER_SERVICE + username);
+        
+        if (response.status == 200) {
+            const user = await response.json();
+
+            // Verificación de credenciales
+            // Nota: En producción, deberías usar bcrypt para comparar contraseñas hash
+            if (user.username === username && user.password === password) {
+                return {
+                    status: 200,
+                    token: "token-falso-" + user._id
+                };
+            } else {
+                return {
+                    status: 403,
+                    message: "Usuario no autorizado, credenciales inválidas"
+                };
+            }
+        } else {
+            return {
+                status: 404,
+                message: "Usuario no encontrado"
+            };
+        }
     } catch (error) {
-        console.error(error);
-        return null;        
-    }
-    
-}
-
-
-const createUser = async (username, password)=>{
-try {
-    const newUser = new User({username,password});
-    const savedUser = await newUser.save();
-    return savedUser;
-} catch (error) {
-    return null;
-}
-
-}
-
-
-const login = async (username,password)=>{
-    const user = await getUserByNameAndPwd(username,password);
-    if (user){
-        var token = `token-falso-${user._id}`;
-        return {token};
-    }
-    return {message:"usuario o contraseña incorrectos"};
-}
-
-const getUserByNameAndPwd = async (username,password)=>{
-    try {
-        const user = await User.findOne({username,password});
-        return user;
-    } catch (error) {
-        return null;
+        return {
+            status: 500,
+            message: error.message
+        }
     }
 }
-
 
 module.exports = {
-    getAllUsers,
-    login,
-    createUser
+    login
 }
