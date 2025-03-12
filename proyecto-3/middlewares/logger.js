@@ -1,14 +1,6 @@
-const logger = (req, res, next)=>{
-
-    //Imprimer un mensaje
-    console.log(`[
-        ${new Date().toISOString}]
-        ${req.method} 
-        ${req.originalurl}
-        `);
-
-    next(); 
-
+const logger = (req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalurl}`);
+    next();
 }
 
-module.export = {logger}
+module.exports = logger;
