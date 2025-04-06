@@ -1,11 +1,9 @@
-// server.js
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const { errorHandler } = require('./src/middleware/errorHandler');
-const routes = require('./src/routes');
-
+const routes = require('./src/routes/index');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
